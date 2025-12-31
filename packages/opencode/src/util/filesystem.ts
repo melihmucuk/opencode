@@ -26,6 +26,17 @@ export namespace Filesystem {
     return !relative(parent, child).startsWith("..")
   }
 
+  /**
+   * Search for a file by walking up the directory tree
+   * @param target - The filename to search for (e.g., "AGENTS.md")
+   * @param start - Starting directory for the search
+   * @param stop - Optional directory where the search should stop (inclusive)
+   * @returns Array of all matching file paths found from start to stop, in order from closest to farthest
+   * 
+   * Example: If searching for "AGENTS.md" from /project/packages/app with stop at /project:
+   * - Returns: ["/project/packages/app/AGENTS.md", "/project/packages/AGENTS.md", "/project/AGENTS.md"]
+   * - All matching files in the hierarchy are returned
+   */
   export async function findUp(target: string, start: string, stop?: string) {
     let current = start
     const result = []

@@ -88,6 +88,10 @@ Learn more about [agents](https://opencode.ai/docs/agents).
 
 For more info on how to configure OpenCode [**head over to our docs**](https://opencode.ai/docs).
 
+#### AGENTS.md Files
+
+OpenCode supports hierarchical `AGENTS.md` files. If you have multiple AGENTS.md files in your directory hierarchy (e.g., one in the root and another in a subdirectory), **all of them will be read and used**. See [docs/AGENTS_MD_HIERARCHY.md](./docs/AGENTS_MD_HIERARCHY.md) for details.
+
 ### Contributing
 
 If you're interested in contributing to OpenCode, please read our [contributing docs](./CONTRIBUTING.md) before submitting a pull request.

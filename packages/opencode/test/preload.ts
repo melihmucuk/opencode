@@ -27,9 +27,14 @@ process.env["XDG_STATE_HOME"] = path.join(dir, "state")
 const cacheDir = path.join(dir, "cache", "opencode")
 await fs.mkdir(cacheDir, { recursive: true })
 await fs.writeFile(path.join(cacheDir, "version"), "14")
-const response = await fetch("https://models.dev/api.json")
-if (response.ok) {
-  await fs.writeFile(path.join(cacheDir, "models.json"), await response.text())
+try {
+  const response = await fetch("https://models.dev/api.json")
+  if (response.ok) {
+    await fs.writeFile(path.join(cacheDir, "models.json"), await response.text())
+  }
+} catch (e) {
+  // Network error, skip models.json download for tests
+  // Tests should still work without it
 }
 // Disable models.dev refresh to avoid race conditions during tests
 process.env["OPENCODE_DISABLE_MODELS_FETCH"] = "true"

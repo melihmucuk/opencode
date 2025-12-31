@@ -70,10 +70,16 @@ export namespace SystemPrompt {
     const config = await Config.get()
     const paths = new Set<string>()
 
+    // Search for local rule files hierarchically
+    // findUp searches from current directory up to worktree root
+    // and returns ALL matching files in the hierarchy
     for (const localRuleFile of LOCAL_RULE_FILES) {
       const matches = await Filesystem.findUp(localRuleFile, Instance.directory, Instance.worktree)
       if (matches.length > 0) {
+        // Add all found files (e.g., both /root/AGENTS.md and /root/packages/AGENTS.md)
         matches.forEach((path) => paths.add(path))
+        // Stop after finding the first file type with matches
+        // e.g., if AGENTS.md is found, don't search for CLAUDE.md
         break
       }
     }
