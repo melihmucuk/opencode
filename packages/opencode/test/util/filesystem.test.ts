@@ -1,6 +1,6 @@
 import { describe, expect, test, beforeEach, afterEach } from "bun:test"
 import { Filesystem } from "../../src/util/filesystem"
-import { mkdtemp, rm, writeFile } from "fs/promises"
+import { mkdtemp, rm, writeFile, mkdir } from "fs/promises"
 import { tmpdir } from "os"
 import { join } from "path"
 
@@ -37,9 +37,10 @@ describe("Filesystem.findUp", () => {
     const componentsAgents = join(componentsDir, "AGENTS.md")
     const uiDir = join(componentsDir, "ui")
 
+    await mkdir(uiDir, { recursive: true })
     await writeFile(rootAgents, "# Root level")
-    await Bun.write(componentsAgents, "# Components level")
-    await Bun.write(join(uiDir, ".gitkeep"), "")
+    await writeFile(componentsAgents, "# Components level")
+    await writeFile(join(uiDir, ".gitkeep"), "")
 
     const results = await Filesystem.findUp("AGENTS.md", uiDir, testDir)
 
@@ -63,9 +64,10 @@ describe("Filesystem.findUp", () => {
     const projectAgents = join(projectDir, "AGENTS.md")
     const srcDir = join(projectDir, "src")
 
+    await mkdir(srcDir, { recursive: true })
     await writeFile(rootAgents, "# Root level - should not be found")
-    await Bun.write(projectAgents, "# Project level")
-    await Bun.write(join(srcDir, ".gitkeep"), "")
+    await writeFile(projectAgents, "# Project level")
+    await writeFile(join(srcDir, ".gitkeep"), "")
 
     const results = await Filesystem.findUp("AGENTS.md", srcDir, projectDir)
 
@@ -98,10 +100,11 @@ describe("Filesystem.findUp", () => {
     const opencodeAgents = join(opencodeDir, "AGENTS.md")
     const srcDir = join(opencodeDir, "src")
 
+    await mkdir(srcDir, { recursive: true })
     await writeFile(rootAgents, "# Root")
-    await Bun.write(packagesAgents, "# Packages")
-    await Bun.write(opencodeAgents, "# Opencode")
-    await Bun.write(join(srcDir, ".gitkeep"), "")
+    await writeFile(packagesAgents, "# Packages")
+    await writeFile(opencodeAgents, "# Opencode")
+    await writeFile(join(srcDir, ".gitkeep"), "")
 
     const results = await Filesystem.findUp("AGENTS.md", srcDir, testDir)
 
